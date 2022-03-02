@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: MY-GATEWAY
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka 
+
+jwt:
+  secret: 293D66AE74131FEAABCC5CC02DD82E1ABE48C1FAE5D8ACDF51AA073E281441F4
