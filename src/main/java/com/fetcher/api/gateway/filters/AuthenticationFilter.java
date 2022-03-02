@@ -18,10 +18,12 @@ import com.fetcher.api.gateway.exceptions.JwtTokenMissingException;
 import com.fetcher.api.gateway.utils.JwtUtil;
 
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @RefreshScope
 @Component
+@Slf4j
 public class AuthenticationFilter implements GatewayFilter {
 
 	@Autowired
@@ -40,7 +42,7 @@ public class AuthenticationFilter implements GatewayFilter {
 			if (!request.getHeaders().containsKey("Authorization")) {
 				ServerHttpResponse response = exchange.getResponse();
 				response.setStatusCode(HttpStatus.UNAUTHORIZED);
-
+				
 				return response.setComplete();
 			}
 
@@ -51,7 +53,7 @@ public class AuthenticationFilter implements GatewayFilter {
 			} catch (JwtTokenMalformedException | JwtTokenMissingException e) {
 				ServerHttpResponse response = exchange.getResponse();
 				response.setStatusCode(HttpStatus.BAD_REQUEST);
-
+				log.error(e.getMessage());
 				return response.setComplete();
 			}
 

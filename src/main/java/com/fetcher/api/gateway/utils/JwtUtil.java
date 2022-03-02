@@ -33,13 +33,13 @@ public class JwtUtil {
 		try {
 			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
 		} catch (SignatureException ex) {
-			throw new JwtTokenMalformedException("Invalid JWT signature");
+			throw new JwtTokenMalformedException(ex.getMessage());
 		} catch (MalformedJwtException ex) {
-			throw new JwtTokenMalformedException("Invalid JWT token");
+			throw new JwtTokenMalformedException(ex.getMessage());
 		} catch (ExpiredJwtException ex) {
-			throw new JwtTokenMalformedException("Expired JWT token");
+			throw new JwtTokenMalformedException(ex.getMessage());
 		} catch (UnsupportedJwtException ex) {
-			throw new JwtTokenMalformedException("Unsupported JWT token");
+			throw new JwtTokenMalformedException(ex.getMessage());
 		} catch (IllegalArgumentException ex) {
 			throw new JwtTokenMissingException("JWT claims string is empty.");
 		}

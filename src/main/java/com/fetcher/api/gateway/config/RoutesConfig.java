@@ -17,6 +17,7 @@ public class RoutesConfig {
 		@Bean
 		public RouteLocator routes(RouteLocatorBuilder builder) {
 			return builder.routes().route("login", r -> r.path("/login/**").filters(f -> f.filter(filter)).uri("lb://Security"))
+					.route("users", r -> r.path("/users/**").filters(f -> f.filter(filter)).uri("lb://Users"))
 					.route("books", r -> r.path("/books/**").filters(f -> f.filter(filter)).uri("lb://books")).build();
 		}
 
