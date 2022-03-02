@@ -34,9 +34,12 @@ public class AuthenticationFilter implements GatewayFilter {
 		ServerHttpRequest request = (ServerHttpRequest) exchange.getRequest();
 
 		final List<String> apiEndpoints = List.of("/register", "/login");
+		final List<String> openSpecificEndpoints = List.of("/books");
 
 		Predicate<ServerHttpRequest> isApiSecured = r -> apiEndpoints.stream()
-				.noneMatch(uri -> r.getURI().getPath().contains(uri));
+				.noneMatch(uri -> r.getURI().getPath().contains(uri)) 
+				&& openSpecificEndpoints.stream()
+				.noneMatch(uri -> r.getURI().getPath().equals(uri));
 
 		if (isApiSecured.test(request)) {
 			if (!request.getHeaders().containsKey("Authorization")) {
@@ -58,7 +61,7 @@ public class AuthenticationFilter implements GatewayFilter {
 			}
 
 			Claims claims = jwtUtil.getClaims(token);
-			exchange.getRequest().mutate().header("id", String.valueOf(claims.get("id"))).build();
+			exchange.getRequest().mutate().header("username", String.valueOf(claims.get("sub"))).build();
 		}
 
 		return chain.filter(exchange);
